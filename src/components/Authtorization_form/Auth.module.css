@@ -1,0 +1,26 @@
+.container{
+    display:flex;
+    justify-content:center;
+    flex-direction:column;
+    border: 1px solid black;
+    padding:20px;
+}
+.container_form{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.header{
+    font-size:28px;
+}
+.input{
+    padding-bottom:5px;
+}
+.label_text{
+    font-weight:500;
+}
+.auth__reg_link{
+    padding-top:5px;
+    font-size:14px;
+}
