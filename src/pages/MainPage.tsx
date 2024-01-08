@@ -1,9 +1,10 @@
 import React from 'react';
-import Auth from '../components/Authtorization_form/Auth';
+import { Link } from 'react-router-dom';
 const MainPage = () =>{
     return(
         <>
-            <Auth/>
+            main pages
+            <Link to='/auth'>Зарегестрироваться</Link>
         </>
     )
 }
