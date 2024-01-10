@@ -25,7 +25,8 @@ const Registration = () =>{
     const Registration = async (name : string,surname : string,email : string, password : string)=>{
         try{
             const response = await axios.post('http://localhost:3100/api/v1/auth/sign-up',{name,surname,email,password});
-            console.log(response.data);
+            // console.log(response.data.accessToken);
+            localStorage.setItem('token', response.data.accessToken);
             if(response){
                 navigate('/todo');
             }

@@ -15,6 +15,7 @@ const Auth = () => {
         try {
             const response = await axios.post('http://localhost:3100/api/v1/auth/sign-in', { email, password });
             console.log(response.data);
+            localStorage.setItem('token', response.data.accessToken);
             // Дополнительная логика после успешного входа
             if(response){
                 navigate('/todo');
