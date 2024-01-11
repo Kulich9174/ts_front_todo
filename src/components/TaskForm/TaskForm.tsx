@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { RootState } from "../../network/store";
+import { addTask } from "../../network/taskSlide";
 
 const TaskForm = () => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const formStateValue = useSelector((state: RootState) => state.formState.value);
-
     useEffect(() => {
         console.log(formStateValue);
         console.log(name);
         console.log(description);
-    }, [name,description]);
+    },);
 
     function handleTaskName(e: React.ChangeEvent<HTMLInputElement>) {
         setName(e.target.value);
@@ -34,7 +35,6 @@ const TaskForm = () => {
             {
                 name: name,
                 description: description,
-                isDone: false // Предполагаем, что новая задача еще не выполнена
             }, 
             {headers:{
                 "Content-Type":'application/json',
@@ -42,10 +42,14 @@ const TaskForm = () => {
             }},
             );
             console.log(response.data);
-            navigate('/todo'); // Перенаправить пользователя на страницу '/todo'
+            if (response.data) {
+                dispatch(addTask(response.data)); // Добавляем задачу в Redux store
+                navigate('/todo');
+                }// Перенаправить пользователя на страницу '/todo'
         } catch (error) {
             console.error('Ошибка при публикации задачи', error);
         }
+
     }
 
     return (
