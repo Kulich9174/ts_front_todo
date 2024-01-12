@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Style from './ToDoList.module.css';
 import { RootState } from '../../network/store';
@@ -11,9 +11,43 @@ const ToDoList = ()=>{
     const navigate = useNavigate();
     const tasks = useSelector((state:RootState) => state.tasks.tasks);
     const dispatch = useDispatch();
+    const [taskIdNum, setTaskIdNum] = useState('');
+
     function NavToForm (){
         navigate('/form');
     }
+    // Получение всех todo юзера
+    const getAllUserTask = async () => {
+        try {
+            // Отправляем запрос на получение всех задач пользователя
+            const response = await axios.get('http://localhost:3100/api/v1/todo', {
+                headers: {
+                    "Content-Type":'application/json',
+                    'x-access-token': localStorage.getItem('token'),
+                }
+            });
+            console.log('все тудушки',response.data); // Выводим полученные данные
+        } catch (error) {
+            console.log('Ошибка при получении задач', error);
+        }
+    }
+    //получение по id 
+    const getTaskUsingID = async (id : string) => {
+        if (!id) return; // Проверяем, что ID был введен
+    
+        try {
+            const response = await axios.get(`http://localhost:3100/api/v1/todo/${id}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-access-token': localStorage.getItem('token')
+                }
+            });
+            console.log("Задача:", response.data);
+        } catch (error) {
+            console.log("Ошибка при получении задачи:", error);
+        }
+    };
+
     const handleCheckboxChange = async (taskId :number|string) => {
         // Найдите задачу по id
         const taskToUpdate = tasks.find(task => task.id === taskId);
@@ -69,23 +103,41 @@ const ToDoList = ()=>{
             <p>Logo</p>
             <Link to='/'>Выход</Link>
         </header>
-        <div>
-            <button onClick={NavToForm}>Добавить задачу</button>
-
-            
+        <div className={Style.task__list}>
+            <div className={Style.task_button}>
+            <button onClick={NavToForm} className={Style.task__add_button}>Добавить задачу</button>
+            </div>
             {tasks.map((task) => (
                     <div key={task.id} className={Style.task__UI}>
-                        <h3>{task.name}</h3>
-                        <p>{task.description}</p>
+                        <div>
+                            <h3>Задача: {task.name}</h3>
+                            <p>Описание: {task.description}</p>
+                            <button onClick={(e)=>deleteTaskForm(e,task.id)}>Удалить</button>
+                        </div>
+                        <label htmlFor=''>
+                        <span>Завершена</span>
                         <input 
+                            className={Style.task__input_isdone}
                             type="checkbox" 
                             checked={task.isDone} 
                             onChange={() => handleCheckboxChange(task.id)} 
                         />
-                        <label>Завершена</label>
-                        <button onClick={(e)=>deleteTaskForm(e,task.id)}>Удалить</button>
+                        </label>
+                        
                 </div>
         ))}
+        <div className={Style.task_button}>
+            <button onClick={getAllUserTask}  className={Style.task__add_button}>Выгрузить в консоль все тудушки юзера</button>
+        </div>
+        <div>
+    <input 
+        type="text" 
+        placeholder="Введите ID задачи" 
+        value={taskIdNum}
+        onChange={(e) => setTaskIdNum(e.target.value)}
+        />
+    <button onClick={() => getTaskUsingID(taskIdNum)}>Получить задачу</button>
+</div>
         </div>
         </>
     )

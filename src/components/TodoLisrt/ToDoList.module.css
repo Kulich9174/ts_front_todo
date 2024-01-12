@@ -3,5 +3,26 @@
     justify-content:space-between;
     padding: 15px 20px;
     border:1px solid black;
+    background-color: grey;
     align-items:center;
+}
+.task__UI{
+    padding: 15px 20px;
+    border:1px solid black;
+    display:flex;
+    justify-content:space-between;
+}
+.task_button{
+    padding:20px 0;
+}
+.task__input_isdone{
+
+}
+.task__add_button{
+    
+}
+.task__list{
+    display:flex;
+    aling-items:center;
+    flex-direction:column;
 }

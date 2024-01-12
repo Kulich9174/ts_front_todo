@@ -89,7 +89,7 @@ const Registration = () =>{
                         <span>{errorName}</span>
                     </div>
                     <button type='submit' onClick={e=>handlerSubmit(e)}>Зарегестрироваться</button>  
-                    <Link to='/' className={Style.reg_link}>Есть аккаунт? Войти.</Link>
+                    <Link to='/auth' className={Style.reg_link}>Есть аккаунт? Войти.</Link>
                 </div>
             </form>
         </>
